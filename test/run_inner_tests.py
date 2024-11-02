@@ -30,6 +30,21 @@ def busy_wait(condition_callable, timeout):
     assert False, "Condition was never met"
 
 
+def test_that_exit_codes_get_remapped_to_0_when_desired(tini: str) -> None:
+    for code in range(0, 256):
+        p = subprocess.Popen(
+            [tini, "-e", str(code), "--", "sh", "-c", "exit {0}".format(code)],
+            stdout=DEVNULL,
+            stderr=DEVNULL,
+            universal_newlines=True,
+        )
+        ret = p.wait()
+        assert ret == 0, "Inclusive exit code test failed for %s, exit: %s" % (
+            code,
+            ret,
+        )
+
+
 def main():
     src = os.environ["SOURCE_DIR"]
     build = os.environ["BUILD_DIR"]
@@ -45,19 +60,8 @@ def main():
     # until that's the default in Tini anyways.
     if not args_disabled:
         print("Running exit code test for {0}".format(tini))
+        test_that_exit_codes_get_remapped_to_0_when_desired(tini)
         for code in range(0, 256):
-            p = subprocess.Popen(
-                [tini, "-e", str(code), "--", "sh", "-c", "exit {0}".format(code)],
-                stdout=DEVNULL,
-                stderr=DEVNULL,
-                universal_newlines=True,
-            )
-            ret = p.wait()
-            assert ret == 0, "Inclusive exit code test failed for %s, exit: %s" % (
-                code,
-                ret,
-            )
-
             other_codes = [x for x in range(0, 256) if x != code]
             args = list(itertools.chain(*[["-e", str(x)] for x in other_codes]))
 
