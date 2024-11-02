@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:24.10
 
 ARG ARCH_SUFFIX
 
@@ -6,7 +6,7 @@ COPY ci/install_deps.sh /install_deps.sh
 RUN /install_deps.sh
 
 # Pre-install those here for faster local builds.
-RUN CFLAGS="-DPR_SET_CHILD_SUBREAPER=36 -DPR_GET_CHILD_SUBREAPER=37" python3 -m pip install psutil python-prctl bitmap
+RUN CFLAGS="-DPR_SET_CHILD_SUBREAPER=36 -DPR_GET_CHILD_SUBREAPER=37" python3 -m pip install --break-system-packages psutil python-prctl bitmap
 
 ARG ARCH_NATIVE
 ARG CC

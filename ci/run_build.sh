@@ -199,7 +199,7 @@ if [[ -n "${ARCH_NATIVE-}" ]]; then
   # Create virtual environment to run tests.
   # Accept system site packages for faster local builds.
   VENV="${BUILD_DIR}/venv"
-  virtualenv --system-site-packages "${VENV}"
+  python3 -m venv --system-site-packages "${VENV}"
 
   # Don't use activate because it does not play nice with nounset
   export PATH="${VENV}/bin:${PATH}"

@@ -6,7 +6,7 @@ set -o xtrace
 DEPS=(
   build-essential git gdb valgrind cmake rpm file
   libcap-dev python3-dev python3-pip python3-setuptools
-  hardening-includes gnupg
+  python3.12-venv devscripts gnupg
 )
 
 case "${ARCH_SUFFIX-}" in
@@ -25,6 +25,3 @@ esac
 apt-get update
 apt-get install --no-install-recommends --yes "${DEPS[@]}"
 rm -rf /var/lib/apt/lists/*
-
-python3 -m pip install --upgrade pip
-python3 -m pip install virtualenv
