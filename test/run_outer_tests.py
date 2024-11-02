@@ -23,7 +23,7 @@ class Command(object):
         self.proc = None
 
     def run(self, timeout=None, retcode=0):
-        print "Testing '{0}'...".format(" ".join(pipes.quote(s) for s in self.cmd)),
+        print("Testing '{0}'...".format(" ".join(pipes.quote(s) for s in self.cmd)),)
         sys.stdout.flush()
 
         err = None
@@ -53,19 +53,19 @@ class Command(object):
             err = Exception("Test failed with unexpected returncode (expected {0}, got {1})".format(retcode, self.proc.returncode))
 
         if err is not None:
-            print "FAIL"
-            print "--- STDOUT ---"
-            print getattr(self, "stdout", "no stdout")
-            print "--- STDERR ---"
-            print getattr(self, "stderr", "no stderr")
-            print "--- ... ---"
+            print("FAIL")
+            print("--- STDOUT ---")
+            print(getattr(self, "stdout", "no stdout"))
+            print("--- STDERR ---")
+            print(getattr(self, "stderr", "no stderr"))
+            print("--- ... ---")
             raise err
         else:
-            print "OK"
+            print("OK")
 
 
 def attach_and_type_exit_0(name):
-    print "Attaching to {0} to exit 0".format(name)
+    print("Attaching to {0} to exit 0".format(name))
     p = pexpect.spawn("docker attach {0}".format(name))
     p.sendline('')
     p.sendline('exit 0')
@@ -73,7 +73,7 @@ def attach_and_type_exit_0(name):
 
 
 def attach_and_issue_ctrl_c(name):
-    print "Attaching to {0} to CTRL+C".format(name)
+    print("Attaching to {0} to CTRL+C".format(name))
     p = pexpect.spawn("docker attach {0}".format(name))
     p.expect_exact('#')
     p.sendintr()
@@ -81,7 +81,7 @@ def attach_and_issue_ctrl_c(name):
 
 
 def test_tty_handling(img, name, base_cmd, fail_cmd, container_command, exit_function, expect_exit_code):
-    print "Testing TTY handling (using container command '{0}' and exit function '{1}')".format(container_command, exit_function.__name__)
+    print("Testing TTY handling (using container command '{0}' and exit function '{1}')".format(container_command, exit_function.__name__))
     rc = ReturnContainer()
 
     shell_ready_event = threading.Event()
